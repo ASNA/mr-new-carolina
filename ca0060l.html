@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>ca0060l.rpg</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>ca0060l.rpg</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <h2>Add/Update model.</h2>
+<hr />
+<p>This program is an example of doing an add/update 
+panel with Mobile RPG. </p>
+<hr />
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Hook up OK and cancel buttons.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Ctl</span><span class="o">-</span><span class="nx">Opt</span> <span class="nx">Option</span><span class="p">(</span><span class="o">*</span><span class="nx">srcstmt</span><span class="p">)</span> <span class="nx">Dftactgrp</span><span class="p">(</span><span class="o">*</span><span class="nx">No</span><span class="p">)</span> <span class="nx">ActGrp</span><span class="p">(</span><span class="s1">&#39;rpmobile&#39;</span><span class="p">);</span>
+
+        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">F</span> <span class="nx">custau</span> <span class="nx">WORKSTN</span> <span class="nx">Infds</span><span class="p">(</span><span class="nx">Infds</span><span class="p">)</span>
+                             <span class="nx">IndDs</span><span class="p">(</span><span class="nx">Display</span><span class="p">)</span>
+                             <span class="nx">Handler</span><span class="p">(</span><span class="s1">&#39;MOBILERPG&#39;</span><span class="p">);</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Program parameter list.</p>
+<ol>
+<li>JobId - The job id of a Job record.</li>
+<li>Status - Program status data structure.</li>
+</ol>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Pi</span> <span class="o">*</span><span class="nx">N</span><span class="p">;</span>
+            <span class="nx">JobId</span> <span class="nx">Char</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+            <span class="nx">Status</span> <span class="nx">LikeDS</span><span class="p">(</span><span class="nx">PgmStatus</span><span class="p">);</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Pi</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p><code>/copy</code> the program status data structure and 
+the <code>Infds</code> data structure (which provides the 
+name of the most recently displayed format
+as <code>CurrentFormat</code>.)</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="err">/copy rp_parts/includes,pgmbegin</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>This data structure maps indicators to
+meaningful names for use with the display file. 
+It's associated with the display file with
+its IndDs keyword. 
+<a href="https://asna.com">Read more details </a>
+about how this structure works.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Ds</span> <span class="nx">Display</span> <span class="nx">Qualified</span><span class="p">;</span>                 
+            <span class="nx">Exit</span>           <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+            <span class="nx">Cancel</span>         <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+            <span class="nx">Back</span>           <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+            <span class="nx">OK</span>             <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+            <span class="nx">ItemTapped</span>     <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+            <span class="nx">ChevronTapped</span>  <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+            <span class="nx">NextPage</span>       <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+            <span class="nx">PrevPage</span>       <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+            <span class="nx">Display</span>        <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">9</span><span class="p">);</span>
+            <span class="nx">Remove</span>         <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+            <span class="nx">Add</span>            <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
+
+            <span class="c1">// Nav buttons.</span>
+            <span class="nx">PrevButtonDisabled</span>  <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>              
+            <span class="nx">NextButtonDisabled</span>  <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">51</span><span class="p">);</span>              
+            <span class="nx">ShowAddUpdate</span>       <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
+
+            <span class="c1">// Subfile operations.</span>
+            <span class="nx">ClearJobSbf</span>    <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">99</span><span class="p">);</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Ds</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Externally defined data structures provide
+target storage area for SQL query. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Ds</span> <span class="nx">JobData</span> <span class="nx">EXTNAME</span><span class="p">(</span><span class="s1">&#39;RPMRE80/JOB&#39;</span><span class="p">)</span> <span class="nx">Qualified</span><span class="p">;</span>     
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Ds</span><span class="p">;</span>                                              
+                                                      
+        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Ds</span> <span class="nx">VehData</span> <span class="nx">EXTNAME</span><span class="p">(</span><span class="s1">&#39;RPMRE80/VEHICLE&#39;</span><span class="p">)</span> <span class="nx">Qualified</span><span class="p">;</span> 
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Ds</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>Named indicators. Don't define any
+here for display file-related indicators. Use
+the <code>Display</code> data structure for workstation file
+indicators.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">S</span> <span class="nx">IndPtr</span> <span class="nx">Pointer</span> <span class="nx">Inz</span><span class="p">(</span><span class="o">%</span><span class="nx">Addr</span><span class="p">(</span><span class="o">*</span><span class="nx">IN</span><span class="p">));</span>                
+        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">DS</span> <span class="nx">Ind</span> <span class="nx">len</span><span class="p">(</span><span class="mi">99</span><span class="p">)</span> <span class="nx">based</span><span class="p">(</span><span class="nx">IndPtr</span><span class="p">)</span> <span class="nx">Qualified</span><span class="p">;</span>   
+            <span class="nx">NamedIndExample</span>        <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">60</span><span class="p">);</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Ds</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Global variables. Put all global variables 
+in this data structure. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">DS</span> <span class="nx">Globals</span> <span class="nx">Qualified</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>JobID          Char(10);</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">End</span><span class="o">-</span><span class="nx">Ds</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>Initialize program. If <code>Init()</code> returns false then 
+an error occurred and control should be passed
+immediately back to the caller.       </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">If</span> <span class="nx">NOT</span> <span class="nx">Init</span><span class="p">();</span>        
+            <span class="nx">Return</span><span class="p">;</span>
+        <span class="nx">EndIf</span><span class="p">;</span>
+
+        <span class="nx">Main</span><span class="p">();</span>
+
+        <span class="nx">Return</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>Program initialization. This procedure should be 
+the first thing called every time this program 
+is called.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Proc</span> <span class="nx">Init</span><span class="p">;</span>
+            <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Pi</span> <span class="o">*</span><span class="nx">N</span> <span class="nx">Ind</span><span class="p">;</span>
+            <span class="nx">End</span><span class="o">-</span><span class="nx">Pi</span><span class="p">;</span>
+            <span class="nx">Dcl</span><span class="o">-</span><span class="nx">S</span> <span class="nx">RowNotFound</span> <span class="nx">Ind</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Configure the SQL environment.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="nx">ConfigureSQL</span><span class="p">();</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>If the JobId is blanks the intention is 
+to add a row. Otherwise the intention
+is to update a row.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="nx">If</span> <span class="nx">JobId</span> <span class="o">&lt;&gt;</span> <span class="o">*</span><span class="nx">Blanks</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>Read a record. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>                <span class="nx">RowNotFound</span> <span class="o">=</span> <span class="nx">ReadRow</span><span class="p">(</span><span class="nx">JobId</span><span class="p">);</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <p>Return if no record found.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>                <span class="nx">If</span> <span class="nx">RowNotFound</span><span class="p">;</span>
+                    <span class="nx">Status</span><span class="p">.</span><span class="nx">Code</span> <span class="o">=</span> <span class="nx">STS_NO_READ</span><span class="p">;</span>
+                    <span class="nx">Status</span><span class="p">.</span><span class="nx">Message</span> <span class="o">=</span><span class="s1">&#39;Record not found&#39;</span><span class="p">;</span>                    
+                    <span class="nx">Return</span> <span class="nx">FALSE</span><span class="p">;</span>
+                <span class="nx">EndIf</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <p>Populate UI elements with data from the 
+just-read row.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>                <span class="nx">PopulateUIFields</span><span class="p">();</span>
+            <span class="nx">Else</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      <p>Clear format. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>                <span class="nx">Clear</span> <span class="nx">CUSTAUD</span><span class="p">;</span>
+            <span class="nx">EndIf</span><span class="p">;</span>               
+ 
+            <span class="nx">ExFmt</span> <span class="nx">CUSTAUD</span><span class="p">;</span>
+
+            <span class="nx">Return</span> <span class="nx">TRUE</span><span class="p">;</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      <p>Program main loop. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Proc</span> <span class="nx">Main</span><span class="p">;</span>
+            <span class="nx">Dow</span> <span class="nx">TRUE</span><span class="p">;</span>
+                <span class="nx">Select</span><span class="p">;</span>
+                    <span class="nx">When</span> <span class="nx">CurrentFormat</span> <span class="o">=</span> <span class="s1">&#39;CUSTAUD&#39;</span><span class="p">;</span>
+                        <span class="nx">Select</span><span class="p">;</span>
+                            <span class="nx">When</span> <span class="nx">Display</span><span class="p">.</span><span class="nx">OK</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
+      </div>
+      <p>Perform update.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>                                <span class="nx">Status</span><span class="p">.</span><span class="nx">Code</span> <span class="o">=</span> <span class="nx">STS_UPDATED</span><span class="p">;</span>
+                                <span class="nx">Return</span><span class="p">;</span>
+
+                            <span class="nx">When</span> <span class="nx">Display</span><span class="p">.</span><span class="nx">Cancel</span><span class="p">;</span>
+                                <span class="nx">Status</span><span class="p">.</span><span class="nx">Code</span> <span class="o">=</span> <span class="nx">STS_CANCELED</span><span class="p">;</span>
+                                <span class="nx">Return</span><span class="p">;</span>
+                        <span class="nx">EndSl</span><span class="p">;</span>
+                <span class="nx">EndSl</span><span class="p">;</span>        
+            <span class="nx">EndDo</span><span class="p">;</span> 
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-19'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-19'>#</a>
+      </div>
+      <p>Use system naming (library/file) and 
+turn off commitment control.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Proc</span> <span class="nx">ConfigureSQL</span><span class="p">;</span>
+            <span class="nx">EXEC</span> <span class="nx">SQL</span>
+                <span class="nx">SET</span> <span class="nx">OPTION</span> <span class="nx">NAMING</span> <span class="o">=</span> <span class="o">*</span><span class="nx">SYS</span><span class="p">,</span>
+                <span class="nx">COMMIT</span> <span class="o">=</span> <span class="o">*</span><span class="nx">NONE</span><span class="p">;</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-20'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-20'>#</a>
+      </div>
+      <p>Read a row to update into the target 
+storage data structures declared above. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Proc</span> <span class="nx">ReadRow</span><span class="p">;</span>
+            <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Pi</span> <span class="o">*</span><span class="nx">N</span> <span class="nx">Ind</span><span class="p">;</span> 
+                <span class="nx">Key</span> <span class="nx">Like</span><span class="p">(</span><span class="nx">JobId</span><span class="p">);</span>
+            <span class="nx">End</span><span class="o">-</span><span class="nx">Pi</span><span class="p">;</span>            
+
+            <span class="nx">Dcl</span><span class="o">-</span><span class="nx">S</span> <span class="nx">Stat</span> <span class="nx">Char</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-21'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      <p>This SQL does a join and then
+selects into the two externally 
+described data structures. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="nx">EXEC</span> <span class="nx">SQL</span>
+            <span class="nx">SELECT</span> <span class="o">*</span> <span class="nx">INTO</span> <span class="o">:</span><span class="nx">JobData</span><span class="p">,</span> <span class="o">:</span><span class="nx">VehData</span>
+                <span class="nx">FROM</span> <span class="p">(</span>                              
+                    <span class="nx">SELECT</span> <span class="o">*</span> 
+                    <span class="nx">FROM</span> <span class="nx">rpmre80</span><span class="o">/</span><span class="nx">job</span> <span class="nx">AS</span> <span class="nx">j</span>
+                    <span class="nx">INNER</span> <span class="nx">JOIN</span> <span class="nx">rpmre80</span><span class="o">/</span><span class="nx">vehicle</span> <span class="nx">AS</span> <span class="nx">v</span>
+                    <span class="nx">ON</span> <span class="nx">j</span><span class="p">.</span><span class="nx">jbvhid</span> <span class="o">=</span> <span class="nx">v</span><span class="p">.</span><span class="nx">vhid</span> 
+                    <span class="nx">WHERE</span> <span class="nx">j</span><span class="p">.</span><span class="nx">jbid</span> <span class="o">=</span> <span class="o">:</span><span class="nx">Key</span>
+                <span class="p">)</span> <span class="nx">as</span> <span class="nx">Tmp</span><span class="p">;</span>  
+
+            <span class="nx">Stat</span> <span class="o">=</span> <span class="nx">SQLSTT</span><span class="p">;</span>
+
+            <span class="nx">Return</span> <span class="nx">SQLRowNotFound</span><span class="p">();</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span>
+
+        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Proc</span> <span class="nx">PopulateUIFields</span><span class="p">;</span>
+            <span class="nx">Cust_Name</span> <span class="o">=</span> <span class="o">%</span><span class="nx">TRIM</span><span class="p">(</span><span class="nx">JobData</span><span class="p">.</span><span class="nx">JBFRMFIRST</span><span class="p">)</span> <span class="o">+</span> 
+                        <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="o">%</span><span class="nx">TRIM</span><span class="p">(</span><span class="nx">JobData</span><span class="p">.</span><span class="nx">JBFRMLAST</span><span class="p">);</span>
+            <span class="nx">Cust_Addr</span> <span class="o">=</span> <span class="o">%</span><span class="nx">TRIM</span><span class="p">(</span><span class="nx">VehData</span><span class="p">.</span><span class="nx">VHMAKE</span><span class="p">)</span> <span class="o">+</span>
+                        <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="o">%</span><span class="nx">TRIM</span><span class="p">(</span><span class="nx">VehData</span><span class="p">.</span><span class="nx">VHMODEL</span><span class="p">);</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span>
+        
+        <span class="err">/copy rp_parts/includes,sqlhelpers</span>
+        <span class="err">/copy rp_parts/includes,assert</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
