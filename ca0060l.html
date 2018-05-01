@@ -17,7 +17,7 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-0'>#</a>
       </div>
-      <h2>Add/Update model.</h2>
+      <h2>Add/Update panel.</h2>
 <hr />
 <p>This program is an example of doing an add/update 
 panel with Mobile RPG. </p>
@@ -71,7 +71,8 @@ panel with Mobile RPG. </p>
       <p><code>/copy</code> the program status data structure and 
 the <code>Infds</code> data structure (which provides the 
 name of the most recently displayed format
-as <code>CurrentFormat</code>.)</p>
+as <code>CurrentFormat</code>.) 
+<a href="https://is.gd/ix2gDf">See this member</a>.</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>        <span class="err">/copy rp_parts/includes,pgmbegin</span></pre></div>
@@ -391,9 +392,19 @@ described data structures. </p>
                     <span class="nx">WHERE</span> <span class="nx">j</span><span class="p">.</span><span class="nx">jbid</span> <span class="o">=</span> <span class="o">:</span><span class="nx">Key</span>
                 <span class="p">)</span> <span class="nx">as</span> <span class="nx">Tmp</span><span class="p">;</span>  
 
-            <span class="nx">Stat</span> <span class="o">=</span> <span class="nx">SQLSTT</span><span class="p">;</span>
-
-            <span class="nx">Return</span> <span class="nx">SQLRowNotFound</span><span class="p">();</span>
+            <span class="nx">Stat</span> <span class="o">=</span> <span class="nx">SQLSTT</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-22'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-22'>#</a>
+      </div>
+      <p>See </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="nx">Return</span> <span class="nx">alSQLRowNotFound</span><span class="p">();</span>
         <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span>
 
         <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Proc</span> <span class="nx">PopulateUIFields</span><span class="p">;</span>
@@ -401,10 +412,31 @@ described data structures. </p>
                         <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="o">%</span><span class="nx">TRIM</span><span class="p">(</span><span class="nx">JobData</span><span class="p">.</span><span class="nx">JBFRMLAST</span><span class="p">);</span>
             <span class="nx">Cust_Addr</span> <span class="o">=</span> <span class="o">%</span><span class="nx">TRIM</span><span class="p">(</span><span class="nx">VehData</span><span class="p">.</span><span class="nx">VHMAKE</span><span class="p">)</span> <span class="o">+</span>
                         <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="o">%</span><span class="nx">TRIM</span><span class="p">(</span><span class="nx">VehData</span><span class="p">.</span><span class="nx">VHMODEL</span><span class="p">);</span>
-        <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span>
-        
-        <span class="err">/copy rp_parts/includes,sqlhelpers</span>
-        <span class="err">/copy rp_parts/includes,assert</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-23'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-23'>#</a>
+      </div>
+      <p><a href="https://is.gd/ix2gDf">See this member</a>.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="err">/copy rp_parts/includes,sqlhelpers</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-24'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-24'>#</a>
+      </div>
+      <p><a href="https://is.gd/ix2gDf">See this member</a>.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="err">/copy rp_parts/includes,assert</span>
 
 </pre></div>
     </div>
