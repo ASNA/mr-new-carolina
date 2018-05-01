@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>ca0044d.rpg</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>ca0044d.rpg</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <h2>Get a paged list for the DDSList panel.</h2>
+<hr />
+<p>This program returns a list for program CA0040L 
+which displays a paged list with the DDSList
+controler. 
+You should be able to copy as many instances of
+this program as you need, varying only the 
+SQL  </p>
+<hr />
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span>        <span class="nx">Ctl</span><span class="o">-</span><span class="nx">Opt</span> <span class="nx">Option</span><span class="p">(</span><span class="o">*</span><span class="nx">srcstmt</span><span class="o">:*</span><span class="nx">NoDebugIO</span><span class="o">:*</span><span class="nx">noShowCpy</span><span class="p">)</span>
+                <span class="nx">Dftactgrp</span><span class="p">(</span><span class="o">*</span><span class="nx">No</span><span class="p">)</span> <span class="nx">ActGrp</span><span class="p">(</span><span class="s1">&#39;rpmobile&#39;</span><span class="p">);</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Program parameter list.</p>
+<ol>
+<li>PageSize - Number of rows to add put in a DDSList.</li>
+<li>PageNumber - Page number to show.</li>
+<li>MoreRows - Return value to show if there more more rows
+              to display (given the current page number). 
+              0 = false, and 1 = true;</li>
+<li>RowsReturned - Return number of rows returned from the
+                  query.</li>
+<li>List - The data structure array populated with the 
+          SQL query.</li>
+<li>Filter - A where clause to use with the query. This 
+            Isn't used in this program.</li>
+</ol>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Pi</span> <span class="o">*</span><span class="nx">N</span><span class="p">;</span>
+            <span class="nx">PageSize</span>        <span class="kr">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="nx">Const</span><span class="p">;</span>
+            <span class="nx">PageNumber</span>      <span class="kr">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="nx">Const</span><span class="p">;</span>                                              
+            <span class="nx">MoreRows</span>        <span class="kr">int</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+            <span class="nx">RowsReturned</span>    <span class="kr">int</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+            <span class="nx">List</span>            <span class="nx">LikeDS</span><span class="p">(</span><span class="nx">RowDef</span><span class="p">)</span> <span class="nx">Dim</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
+            <span class="nx">Filter</span>          <span class="nx">Char</span><span class="p">(</span><span class="mi">40</span><span class="p">);</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Pi</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Define a row for the DDSList.               </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">DS</span> <span class="nx">RowDef</span> <span class="nx">Qualified</span><span class="p">;</span>
+            <span class="nx">Text</span>       <span class="nx">Char</span><span class="p">(</span><span class="mi">70</span><span class="p">);</span>
+            <span class="nx">Detail</span>     <span class="nx">Char</span><span class="p">(</span><span class="mi">70</span><span class="p">);</span>
+            <span class="nx">Value</span>      <span class="nx">Char</span><span class="p">(</span><span class="mi">32</span><span class="p">);</span>
+            <span class="nx">Selected</span>   <span class="nx">Char</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+            <span class="nx">Category</span>   <span class="nx">Char</span><span class="p">(</span><span class="mi">16</span><span class="p">);</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">DS</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>Global variables. Put all global variables 
+in this data structure. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">DS</span> <span class="nx">Globals</span> <span class="nx">Qualified</span><span class="p">;</span>
+            <span class="nx">RowsFetched</span>     <span class="nx">Int</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+            <span class="nx">PageOffset</span>      <span class="nx">Int</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+            <span class="nx">PageSizePlusOne</span> <span class="nx">Int</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+            <span class="nb">Error</span>           <span class="nx">Char</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+            <span class="nx">ErrText</span>         <span class="nx">VarChar</span><span class="p">(</span><span class="mi">1024</span><span class="p">);</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Ds</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>Clear filter if it wasn't provided.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">If</span> <span class="o">%</span><span class="nx">PARMS</span><span class="p">()</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+            <span class="nx">Filter</span> <span class="o">=</span> <span class="o">*</span><span class="nx">Blanks</span><span class="p">;</span>
+        <span class="nx">EndIf</span><span class="p">;</span>
+
+        <span class="nx">Main</span><span class="p">();</span>
+
+        <span class="nx">Return</span><span class="p">;</span>
+
+        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Proc</span> <span class="nx">Main</span><span class="p">;</span>       
+            <span class="nx">Clear</span> <span class="nx">List</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Attempt to fetch one more row than requested
+to be able to tell if there are more rows
+to fetch. SQL pages are zero-based; asking
+for PageNumber=1 and PageSize=6 gets you 
+7 rows. The PageSize+1 row (the 7th row in
+this case) is not displayed, but its existence
+is used to indicate there are more rows 
+to display. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="nx">Globals</span><span class="p">.</span><span class="nx">PageOffset</span> <span class="o">=</span>
+                <span class="p">(</span><span class="nx">PageNumber</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">PageSize</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+
+            <span class="nx">ConfigureSQL</span><span class="p">();</span>         
+            <span class="nx">GetSQLCursor</span><span class="p">();</span>
+            <span class="nx">RowsReturned</span> <span class="o">=</span> <span class="nx">LoadList</span><span class="p">();</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>Use RowsReturned to get for more rows 
+to display. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="nx">If</span> <span class="nx">RowsReturned</span> <span class="o">=</span> <span class="nx">PageSize</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="nx">MoreRows</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="nx">Else</span><span class="p">;</span>
+                <span class="nx">MoreRows</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="nx">EndIf</span><span class="p">;</span>       
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Use system naming (library/file) and 
+turn off commitment control.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Proc</span> <span class="nx">ConfigureSQL</span><span class="p">;</span>
+            <span class="nx">EXEC</span> <span class="nx">SQL</span>
+                <span class="nx">SET</span> <span class="nx">OPTION</span> <span class="nx">NAMING</span> <span class="o">=</span> <span class="o">*</span><span class="nx">SYS</span><span class="p">,</span>
+                <span class="nx">COMMIT</span> <span class="o">=</span> <span class="o">*</span><span class="nx">NONE</span><span class="p">;</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>Declare and instance an SQL cursor. This routine is the
+the data-specific part of this program. The rest of it should 
+work with any query. Although the <code>Filter</code> variable isn't used 
+in this query, other queries could use it with an SQL WHERE 
+clause to filter rows. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Proc</span> <span class="nx">GetSQLCursor</span><span class="p">;</span>
+            <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Pi</span> <span class="o">*</span><span class="nx">N</span><span class="p">;</span> 
+            <span class="nx">End</span><span class="o">-</span><span class="nx">Pi</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>When fetching multiple rows in a data structure array, 
+you need to use a cursor. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="nx">EXEC</span> <span class="nx">SQL</span> 
+                <span class="nx">DECLARE</span> <span class="nx">C1</span> <span class="nx">CURSOR</span> <span class="nx">FOR</span>
+                <span class="nx">SELECT</span> 
+                    <span class="nx">CHAR</span><span class="p">(</span><span class="nx">vhYear</span><span class="p">)</span> <span class="nx">CONCAT</span> <span class="s1">&#39; &#39;</span> <span class="nx">CONCAT</span>                    
+                    <span class="nx">TRIM</span><span class="p">(</span><span class="nx">vhMake</span><span class="p">)</span> <span class="nx">CONCAT</span> <span class="s1">&#39; &#39;</span> <span class="nx">CONCAT</span> <span class="nx">TRIM</span><span class="p">(</span><span class="nx">vhModel</span><span class="p">)</span> 
+                        <span class="nx">as</span> <span class="nx">Text</span><span class="p">,</span>
+                    <span class="nx">TRIM</span><span class="p">(</span><span class="nx">jbfrmcity</span><span class="p">)</span> <span class="nx">CONCAT</span> <span class="s1">&#39;, &#39;</span> 
+                                    <span class="nx">CONCAT</span> <span class="nx">TRIM</span><span class="p">(</span><span class="nx">jbfrmstate</span><span class="p">)</span> <span class="nx">as</span> <span class="nx">Detail</span><span class="p">,</span>
+                    <span class="nx">TRIM</span><span class="p">(</span><span class="nx">jbid</span><span class="p">)</span> <span class="nx">CONCAT</span> <span class="s1">&#39;-&#39;</span> <span class="nx">CONCAT</span> <span class="nx">TRIM</span><span class="p">(</span><span class="nx">jbVHID</span><span class="p">)</span> <span class="nx">as</span> <span class="nx">Value</span><span class="p">,</span>
+                    <span class="s1">&#39;&#39;</span> <span class="nx">as</span> <span class="nx">Selected</span><span class="p">,</span>
+                    <span class="s1">&#39;&#39;</span> <span class="nx">as</span> <span class="nx">Category</span>  
+                <span class="nx">FROM</span>
+                <span class="p">(</span>
+                    <span class="nx">SELECT</span> <span class="nx">ROW_NUMBER</span><span class="p">()</span> 
+                    <span class="nx">OVER</span><span class="p">(</span><span class="nx">ORDER</span> <span class="nx">BY</span> <span class="nx">LCASE</span><span class="p">(</span><span class="nx">TRIM</span><span class="p">(</span><span class="nx">jbid</span><span class="p">)))</span> 
+                    <span class="nx">AS</span> <span class="nx">rn</span><span class="p">,</span> <span class="nx">j</span><span class="p">.</span><span class="o">*</span><span class="p">,</span> <span class="nx">v</span><span class="p">.</span><span class="o">*</span>
+
+                    <span class="nx">FROM</span> <span class="nx">rpmre80</span><span class="p">.</span><span class="nx">job</span> <span class="nx">as</span> <span class="nx">j</span> 
+                        <span class="nx">INNER</span> <span class="nx">JOIN</span> <span class="nx">rpmre80</span><span class="p">.</span><span class="nx">vehicle</span> <span class="nx">as</span> <span class="nx">v</span>
+                        <span class="nx">ON</span> <span class="nx">j</span><span class="p">.</span><span class="nx">jbvhid</span> <span class="o">=</span> <span class="nx">v</span><span class="p">.</span><span class="nx">vhid</span>
+                <span class="p">)</span> <span class="nx">as</span> <span class="nx">tmp</span> 
+
+                <span class="nx">WHERE</span> <span class="nx">rn</span> 
+                    <span class="nx">BETWEEN</span> <span class="o">:</span><span class="nx">Globals</span><span class="p">.</span><span class="nx">PageOffset</span> 
+                        <span class="nx">AND</span> <span class="p">(</span><span class="o">:</span><span class="nx">Globals</span><span class="p">.</span><span class="nx">PageOffset</span> <span class="o">+</span> <span class="o">:</span><span class="nx">PageSize</span><span class="p">)</span>
+                <span class="nx">ORDER</span> <span class="nx">BY</span> <span class="nx">rn</span><span class="p">;</span>                                           
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>Load the List data structure from the SQL cursor. Note
+this procedure is hardcoded to return up to 50 rows. 
+Usually, you'll only return 10-20 rows or so into a 
+DDSList page. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Proc</span> <span class="nx">LoadList</span><span class="p">;</span>
+            <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Pi</span> <span class="o">*</span><span class="nx">N</span> <span class="nx">Int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+            <span class="nx">End</span><span class="o">-</span><span class="nx">Pi</span><span class="p">;</span>
+
+            <span class="nx">Dcl</span><span class="o">-</span><span class="nx">S</span> <span class="nx">RowsReturned</span> <span class="nx">Int</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Open the cursor defined in <code>GetSQLCursor().</code>                </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="nx">EXEC</span> <span class="nx">SQL</span>    
+                <span class="nx">Open</span> <span class="nx">C1</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>Make sure all is OK with SQL so far.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="nx">alAssert</span><span class="p">(</span><span class="nx">SQLSTT</span><span class="o">=*</span><span class="nx">ZEROS</span><span class="o">:</span> <span class="s1">&#39;Open error &#39;</span> <span class="o">+</span> <span class="nx">SQLSTT</span><span class="p">);</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>Populate the List data structure.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="nx">EXEC</span> <span class="nx">SQL</span>
+                <span class="nx">FETCH</span> <span class="nx">C1</span> <span class="nx">FOR</span> <span class="mi">50</span> <span class="nx">ROWS</span>
+                <span class="nx">INTO</span> <span class="o">:</span><span class="nx">List</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <p>Get the rows returned.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="nx">EXEC</span> <span class="nx">SQL</span> 
+                <span class="nx">GET</span> <span class="nx">DIAGNOSTICS</span> <span class="o">:</span><span class="nx">RowsReturned</span> <span class="o">=</span> <span class="nx">ROW_COUNT</span><span class="p">;</span>
+
+            <span class="nx">EXEC</span> <span class="nx">SQL</span> 
+                <span class="nx">Close</span> <span class="nx">C1</span><span class="p">;</span>                
+
+            <span class="nx">Return</span> <span class="nx">RowsReturned</span><span class="p">;</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <p><a href="https://goo.gl/FQtNhq">See this member</a>.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="err">/copy rp_parts/includes,assert</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      <p><a href="https://goo.gl/cdXKUn">See this member</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="err">/copy rp_parts/includes,message</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>ca0040l.rpg</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>ca0040l.rpg</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <h2>Page at-a-time list with DSSList.</h2>
+<hr />
+<p>This program is an example of doing a page-at-a-time 
+list with Mobile RPG's DDSList control.</p>
+<hr />
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span>        <span class="nx">Ctl</span><span class="o">-</span><span class="nx">Opt</span> <span class="nx">Option</span><span class="p">(</span><span class="o">*</span><span class="nx">srcstmt</span><span class="p">)</span> <span class="nx">Dftactgrp</span><span class="p">(</span><span class="o">*</span><span class="nx">No</span><span class="p">)</span> <span class="nx">ActGrp</span><span class="p">(</span><span class="s1">&#39;rpmobile&#39;</span><span class="p">);</span>
+
+        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">F</span> <span class="nx">smplst</span> <span class="nx">WORKSTN</span> <span class="nx">Infds</span><span class="p">(</span><span class="nx">Infds</span><span class="p">)</span>
+                             <span class="nx">IndDs</span><span class="p">(</span><span class="nx">Display</span><span class="p">)</span>
+                             <span class="nx">Handler</span><span class="p">(</span><span class="s1">&#39;MOBILERPG&#39;</span><span class="p">)</span>
+                             <span class="nx">SFile</span><span class="p">(</span><span class="nx">CSTSBF</span><span class="o">:</span><span class="nx">Globals</span><span class="p">.</span><span class="nx">SbfRRN</span><span class="p">)</span>
+                             <span class="nx">SFile</span><span class="p">(</span><span class="nx">MAPSBF</span><span class="o">:</span><span class="nx">Globals</span><span class="p">.</span><span class="nx">SbfRRN</span><span class="p">);</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Program parameter list.
+There aren't any parameters for this program.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Pi</span> <span class="o">*</span><span class="nx">N</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Entry point parm list.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">End</span><span class="o">-</span><span class="nx">Pi</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p><code>/copy</code> the program status data structure and 
+the <code>Infds</code> data structure (which provides the 
+name of the most recently displayed format
+as <code>CurrentFormat</code>.) 
+<a href="https://goo.gl/B9q5Au">See this member</a>.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="err">/copy rp_parts/includes,pgmbegin</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>This data structure maps indicators to
+meaningful names for use with the display file. 
+It's associated with the display file with
+its IndDs keyword. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Ds</span> <span class="nx">Display</span> <span class="nx">Qualified</span><span class="p">;</span> 
+            <span class="c1">// Response indicators.                </span>
+            <span class="nx">Cancel</span>         <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+            <span class="nx">Back</span>           <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+            <span class="nx">ItemTapped</span>     <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+            <span class="nx">ChevronTapped</span>  <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+            <span class="nx">NextPage</span>       <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+            <span class="nx">PrevPage</span>       <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+            <span class="nx">OK</span>             <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+            <span class="nx">Display</span>        <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">9</span><span class="p">);</span>
+            <span class="nx">Remove</span>         <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+
+            <span class="c1">// Nav buttons.</span>
+            <span class="nx">Exit</span>                <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+            <span class="nx">PrevButtonDisabled</span>  <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>              
+            <span class="nx">NextButtonDisabled</span>  <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">51</span><span class="p">);</span>              
+            <span class="nx">AddUpdate</span>           <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
+
+            <span class="c1">// Subfile operations.</span>
+            <span class="nx">ClearJobSbf</span>    <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">99</span><span class="p">);</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Ds</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Hard-coded page size. This should later be 
+softcoded and changeable by the user.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">C</span> <span class="nx">PAGE_SIZE</span>      <span class="nx">Const</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>Named indicators. Don't define any
+here for display file-related indicators. Use
+the <code>Display</code> data structure for workstation file
+indicators.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">S</span> <span class="nx">IndPtr</span> <span class="nx">Pointer</span> <span class="nx">Inz</span><span class="p">(</span><span class="o">%</span><span class="nx">Addr</span><span class="p">(</span><span class="o">*</span><span class="nx">IN</span><span class="p">));</span>                
+        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">DS</span> <span class="nx">Ind</span> <span class="nx">Len</span><span class="p">(</span><span class="mi">99</span><span class="p">)</span> <span class="nx">Based</span><span class="p">(</span><span class="nx">IndPtr</span><span class="p">)</span> <span class="nx">Qualified</span><span class="p">;</span>   
+             <span class="nx">NamedIndExample</span>        <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">60</span><span class="p">);</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">DS</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Global variables. Put all global variables 
+in this data structure. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">DS</span> <span class="nx">Globals</span> <span class="nx">Qualified</span><span class="p">;</span>
+            <span class="nx">SbfRRN</span>         <span class="nx">Int</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+            <span class="nx">PageNumber</span>     <span class="nx">Int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="nx">Inz</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+            <span class="nx">MoreRows</span>       <span class="kr">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="nx">Inz</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+            <span class="nx">RowsReturned</span>   <span class="kr">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="nx">Inz</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+            <span class="nx">Filter</span>         <span class="nx">Char</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span> <span class="nx">Inz</span><span class="p">(</span><span class="o">*</span><span class="nx">BLANKS</span><span class="p">);</span>
+            <span class="nx">List</span>           <span class="nx">LikeDS</span><span class="p">(</span><span class="nx">RowDef</span><span class="p">)</span> <span class="nx">Dim</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
+            <span class="nx">OK</span>             <span class="nx">Ind</span><span class="p">;</span>
+            <span class="nx">splitResults</span>   <span class="nx">VarChar</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="nx">Dim</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Ds</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>Define a row for the DDSList. An array of 
+these is fetched from another program and 
+stored in Globals.List. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">DS</span> <span class="nx">RowDef</span> <span class="nx">Qualified</span><span class="p">;</span>
+            <span class="nx">Text</span>       <span class="nx">Char</span><span class="p">(</span><span class="mi">70</span><span class="p">);</span>
+            <span class="nx">Detail</span>     <span class="nx">Char</span><span class="p">(</span><span class="mi">70</span><span class="p">);</span>
+            <span class="nx">Value</span>      <span class="nx">Char</span><span class="p">(</span><span class="mi">32</span><span class="p">);</span>
+            <span class="nx">Selected</span>   <span class="nx">Char</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+            <span class="nx">Category</span>   <span class="nx">Char</span><span class="p">(</span><span class="mi">16</span><span class="p">);</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">DS</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>Globals.PageNumber = 1;
+Globals.MoreRows = 0;
+Globals.RowsReturned = 0;
+Globals.Filter = *BLANKS;</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>Initialize program.            </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Init</span><span class="p">();</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Main program loop.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Main</span><span class="p">();</span>
+
+        <span class="o">*</span><span class="nx">InLR</span> <span class="o">=</span> <span class="o">*</span><span class="nx">On</span><span class="p">;</span>
+        <span class="nx">Return</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>Load initial page and then display the CUSTLIST format.           </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Proc</span> <span class="nx">Init</span><span class="p">;</span>
+            <span class="nx">LoadPage</span><span class="p">();</span>
+            <span class="nx">DisplayFormat</span><span class="p">(</span><span class="s1">&#39;CUSTLIST&#39;</span><span class="p">);</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span>   
+
+        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Proc</span> <span class="nx">Main</span><span class="p">;</span>                
+            <span class="nx">Dow</span> <span class="nx">NOT</span> <span class="nx">Display</span><span class="p">.</span><span class="nx">Exit</span><span class="p">;</span>
+                <span class="nx">Select</span><span class="p">;</span>
+                    <span class="nx">When</span> <span class="nx">CurrentFormat</span> <span class="o">=</span> <span class="s1">&#39;CUSTLIST&#39;</span><span class="p">;</span>
+                        <span class="nx">Select</span><span class="p">;</span>
+                            <span class="nx">When</span> <span class="nx">Display</span><span class="p">.</span><span class="nx">ItemTapped</span><span class="p">;</span>
+                                <span class="nx">ReadC</span> <span class="nx">CSTSBF</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>Get the JobID from the CSTVAl field.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>                                <span class="nx">Globals</span><span class="p">.</span><span class="nx">SplitResults</span> <span class="o">=</span> <span class="nx">alSplit</span><span class="p">(</span><span class="nx">CSTVAL</span><span class="p">);</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <p>Call the add/update program to update 
+item selected.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>                                <span class="nx">Globals</span><span class="p">.</span><span class="nx">OK</span> <span class="o">=</span> <span class="nx">AddUpdate</span><span class="p">(</span><span class="nx">Globals</span><span class="p">.</span><span class="nx">SplitResults</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+                                <span class="nx">If</span> <span class="nx">Globals</span><span class="p">.</span><span class="nx">OK</span><span class="p">;</span>
+                                    <span class="nx">LoadPage</span><span class="p">();</span>                          
+                                    <span class="nx">DisplayFormat</span><span class="p">(</span><span class="s1">&#39;CUSTLIST&#39;</span><span class="p">);</span>
+                                <span class="nx">Else</span><span class="p">;</span>
+                                    <span class="nx">LoadPage</span><span class="p">();</span>
+                                    <span class="nx">DisplayFormat</span><span class="p">(</span><span class="s1">&#39;CUSTLIST&#39;</span><span class="p">);</span>
+                                <span class="nx">EndIf</span><span class="p">;</span>
+
+                            <span class="nx">When</span> <span class="nx">Display</span><span class="p">.</span><span class="nx">NextPage</span><span class="p">;</span>
+                                <span class="nx">GetNextPageNumber</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+                                <span class="nx">LoadPage</span><span class="p">();</span>
+                                <span class="nx">DisplayFormat</span><span class="p">(</span><span class="s1">&#39;CUSTLIST&#39;</span><span class="p">);</span>
+
+                            <span class="nx">When</span> <span class="nx">Display</span><span class="p">.</span><span class="nx">PrevPage</span><span class="p">;</span>
+                                <span class="nx">GetNextPageNumber</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+                                <span class="nx">LoadPage</span><span class="p">();</span>
+                                <span class="nx">DisplayFormat</span><span class="p">(</span><span class="s1">&#39;CUSTLIST&#39;</span><span class="p">);</span>
+
+                            <span class="nx">When</span> <span class="nx">Display</span><span class="p">.</span><span class="nx">AddUpdate</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <p>Call the add/update page to add a 
+new item.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>                                <span class="nx">AddUpdate</span><span class="p">(</span><span class="o">*</span><span class="nx">BLANKS</span><span class="p">);</span>
+                                <span class="nx">LoadPage</span><span class="p">();</span>
+                                <span class="nx">DisplayFormat</span><span class="p">(</span><span class="s1">&#39;CUSTLIST&#39;</span><span class="p">);</span>                            
+                                
+                            <span class="nx">Other</span><span class="p">;</span>
+                                <span class="nx">DisplayFormat</span><span class="p">(</span><span class="s1">&#39;CUSTLIST&#39;</span><span class="p">);</span>
+                        <span class="nx">EndSl</span><span class="p">;</span>
+                <span class="nx">EndSl</span><span class="p">;</span>
+            <span class="nx">EndDo</span><span class="p">;</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      <p>Display a format.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Proc</span> <span class="nx">DisplayFormat</span><span class="p">;</span>
+            <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Pi</span> <span class="o">*</span><span class="nx">N</span><span class="p">;</span>
+                <span class="nx">Format</span> <span class="nx">Char</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="nx">Const</span><span class="p">;</span>
+            <span class="nx">End</span><span class="o">-</span><span class="nx">Pi</span><span class="p">;</span> 
+
+            <span class="nx">Select</span><span class="p">;</span>
+                <span class="nx">When</span> <span class="nx">Format</span> <span class="o">=</span> <span class="s1">&#39;CUSTLIST&#39;</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      <p>Set buttons status before showing
+format.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>                    <span class="nx">SetButtonsStatus</span><span class="p">();</span>                
+                    <span class="nx">ExFmt</span> <span class="nx">CUSTLIST</span><span class="p">;</span>
+            <span class="nx">EndSl</span><span class="p">;</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
+      </div>
+      <p>Get next page number. You don't need to worry 
+about minimum or maximum values because the 
+Previous and Next buttons are disabled to keep 
+the user from requesting out-of-bounds pages.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Proc</span> <span class="nx">GetNextPageNumber</span><span class="p">;</span>
+            <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Pi</span> <span class="o">*</span><span class="nx">N</span><span class="p">;</span>
+                <span class="nx">Increment</span> <span class="nx">Int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="nx">Const</span><span class="p">;</span>
+            <span class="nx">End</span><span class="o">-</span><span class="nx">Pi</span><span class="p">;</span>            
+
+            <span class="nx">If</span> <span class="nx">Increment</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+                <span class="nx">Globals</span><span class="p">.</span><span class="nx">PageNumber</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>                
+            <span class="nx">Else</span><span class="p">;</span>
+                <span class="nx">Globals</span><span class="p">.</span><span class="nx">PageNumber</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="nx">EndIf</span><span class="p">;</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-19'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-19'>#</a>
+      </div>
+      <p>Load a page in the DDSList control's subfile.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Proc</span> <span class="nx">LoadPage</span><span class="p">;</span>
+            <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Pi</span> <span class="o">*</span><span class="nx">N</span> 
+            <span class="nx">End</span><span class="o">-</span><span class="nx">Pi</span><span class="p">;</span>
+
+            <span class="nx">Dcl</span><span class="o">-</span><span class="nx">S</span> <span class="nx">Index</span> <span class="nx">Int</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+            <span class="nx">Dcl</span><span class="o">-</span><span class="nx">S</span> <span class="nx">IndexStop</span> <span class="nx">Int</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-20'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-20'>#</a>
+      </div>
+      <p>Populate the Globals.List array. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="nx">GetList</span><span class="p">();</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-21'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      <p>Determine how many rows to display.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="nx">If</span> <span class="nx">Globals</span><span class="p">.</span><span class="nx">RowsReturned</span> <span class="o">&lt;</span> <span class="nx">PAGE_SIZE</span><span class="p">;</span>
+                <span class="nx">IndexStop</span> <span class="o">=</span> <span class="nx">Globals</span><span class="p">.</span><span class="nx">RowsReturned</span><span class="p">;</span>
+            <span class="nx">Else</span><span class="p">;</span>
+                <span class="nx">IndexStop</span> <span class="o">=</span> <span class="nx">PAGE_SIZE</span><span class="p">;</span>
+            <span class="nx">EndIf</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-22'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-22'>#</a>
+      </div>
+      <p>Initialize the subfile.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="nx">Display</span><span class="p">.</span><span class="nx">ClearJobSbf</span> <span class="o">=</span> <span class="nx">TRUE</span><span class="p">;</span>
+            <span class="nx">Write</span> <span class="nx">CSTCTRL</span><span class="p">;</span>
+            <span class="nx">Globals</span><span class="p">.</span><span class="nx">SbfRRN</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-23'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-23'>#</a>
+      </div>
+      <p>Iterate over Globals.List elements to 
+populate the subfile.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="nx">For</span> <span class="nx">Index</span><span class="o">=</span><span class="mi">1</span> <span class="nx">TO</span> <span class="nx">IndexStop</span><span class="p">;</span>
+                <span class="nx">Globals</span><span class="p">.</span><span class="nx">SbfRRN</span> <span class="o">=</span> <span class="nx">Globals</span><span class="p">.</span><span class="nx">SbfRRN</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-24'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-24'>#</a>
+      </div>
+      <p>Mobile RPG sets CSTSEL to '1' if a row
+is selected (by tapping or clicking it).</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>                <span class="nx">CSTSEL</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span><span class="p">;</span>
+                <span class="nx">CSTTXT</span> <span class="o">=</span> <span class="nx">Globals</span><span class="p">.</span><span class="nx">List</span><span class="p">(</span><span class="nx">Index</span><span class="p">).</span><span class="nx">Text</span><span class="p">;</span>
+                <span class="nx">CSTDTL</span> <span class="o">=</span> <span class="nx">Globals</span><span class="p">.</span><span class="nx">List</span><span class="p">(</span><span class="nx">Index</span><span class="p">).</span><span class="nx">Detail</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-25'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-25'>#</a>
+      </div>
+      <p>In this example, the value associated 
+with CSTVAL is two parts, separated 
+by a dash. See program CA0044D for more
+info.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>                <span class="nx">CSTVAL</span> <span class="o">=</span> <span class="nx">Globals</span><span class="p">.</span><span class="nx">List</span><span class="p">(</span><span class="nx">Index</span><span class="p">).</span><span class="nx">Value</span><span class="p">;</span>
+                <span class="nx">Write</span> <span class="nx">CSTSBF</span><span class="p">;</span>
+            <span class="nx">EndFor</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-26'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-26'>#</a>
+      </div>
+      <p>Write the subfile controller.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="nx">Display</span><span class="p">.</span><span class="nx">ClearJobSbf</span> <span class="o">=</span> <span class="nx">FALSE</span><span class="p">;</span>
+            <span class="nx">Write</span> <span class="nx">CSTCTRL</span><span class="p">;</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span>
+
+        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Proc</span> <span class="nx">SetButtonsStatus</span><span class="p">;</span>
+            <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Pi</span> <span class="o">*</span><span class="nx">N</span> 
+            <span class="nx">End</span><span class="o">-</span><span class="nx">Pi</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-27'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-27'>#</a>
+      </div>
+      <p>This is the cool part about using the IndDS data
+structure. The two values below are mapped to 
+indicators 50 and 51 (respectively). The previous
+next buttons use those two indicators to control
+their disabled status. Setting the value of the 
+DS fields below also sets the value of their 
+corresponding indicators.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="nx">Display</span><span class="p">.</span><span class="nx">PrevButtonDisabled</span> <span class="o">=</span> <span class="p">(</span><span class="nx">Globals</span><span class="p">.</span><span class="nx">PageNumber</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span>
+            <span class="nx">Display</span><span class="p">.</span><span class="nx">NextButtonDisabled</span> <span class="o">=</span> <span class="p">(</span><span class="nx">Globals</span><span class="p">.</span><span class="nx">MoreRows</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-28'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-28'>#</a>
+      </div>
+      <p>Get the list for the DDSList control. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Proc</span> <span class="nx">GetList</span><span class="p">;</span>
+            <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Pi</span> <span class="o">*</span><span class="nx">N</span><span class="p">;</span>
+            <span class="nx">End</span><span class="o">-</span><span class="nx">Pi</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-29'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-29'>#</a>
+      </div>
+      <p>The page number controls which "page" 
+is returned. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Pr</span> <span class="nx">GetListPgm</span> <span class="nx">ExtPgm</span><span class="p">(</span><span class="s1">&#39;CA0044D&#39;</span><span class="p">);</span>
+                <span class="nx">PageSize</span>        <span class="kr">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="nx">Const</span><span class="p">;</span>
+                <span class="nx">PageNumber</span>      <span class="kr">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="nx">Const</span><span class="p">;</span>                                              
+                <span class="nx">MoreRows</span>        <span class="kr">int</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+                <span class="nx">RowsReturned</span>    <span class="kr">int</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+                <span class="nx">List</span>            <span class="nx">LikeDS</span><span class="p">(</span><span class="nx">RowDef</span><span class="p">)</span> <span class="nx">Dim</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
+                <span class="nx">Filter</span>          <span class="nx">Char</span><span class="p">(</span><span class="mi">40</span><span class="p">);</span>
+            <span class="nx">End</span><span class="o">-</span><span class="nx">Pr</span><span class="p">;</span>               
+
+            <span class="nx">CallP</span> <span class="nx">GetListPgm</span><span class="p">(</span><span class="nx">PAGE_SIZE</span><span class="o">:</span>
+                          <span class="nx">Globals</span><span class="p">.</span><span class="nx">PageNumber</span><span class="o">:</span>
+                          <span class="nx">Globals</span><span class="p">.</span><span class="nx">MoreRows</span><span class="o">:</span>
+                          <span class="nx">Globals</span><span class="p">.</span><span class="nx">RowsReturned</span><span class="o">:</span>
+                          <span class="nx">Globals</span><span class="p">.</span><span class="nx">List</span><span class="o">:</span>
+                          <span class="nx">Globals</span><span class="p">.</span><span class="nx">Filter</span><span class="p">);</span>                          
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-30'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-30'>#</a>
+      </div>
+      <p>Display the AddUpdate panel. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Proc</span> <span class="nx">AddUpdate</span><span class="p">;</span>
+            <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Pi</span> <span class="o">*</span><span class="nx">N</span> <span class="nx">Ind</span><span class="p">;</span>
+                <span class="nx">JobID</span> <span class="nx">Char</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="nx">Const</span><span class="p">;</span>
+            <span class="nx">End</span><span class="o">-</span><span class="nx">Pi</span><span class="p">;</span>
+
+            <span class="nx">Dcl</span><span class="o">-</span><span class="nx">DS</span> <span class="nx">Status</span> <span class="nx">LikeDS</span><span class="p">(</span><span class="nx">PgmStatus</span><span class="p">);</span>
+
+            <span class="nx">Dcl</span><span class="o">-</span><span class="nx">S</span> <span class="nx">Result</span> <span class="nx">Ind</span><span class="p">;</span>
+
+            <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Pr</span> <span class="nx">AddUpdatePgm</span> <span class="nx">ExtPgm</span><span class="p">(</span><span class="s1">&#39;CA0060L&#39;</span><span class="p">);</span>
+                <span class="nx">JobId</span> <span class="nx">Char</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="nx">Const</span><span class="p">;</span>
+                <span class="nx">Status</span> <span class="nx">LikeDS</span><span class="p">(</span><span class="nx">PgmStatus</span><span class="p">);</span>
+            <span class="nx">End</span><span class="o">-</span><span class="nx">Pr</span><span class="p">;</span>            
+
+            <span class="nx">CallP</span> <span class="nx">AddUpdatePgm</span><span class="p">(</span><span class="nx">JobId</span><span class="o">:</span> <span class="nx">Status</span><span class="p">);</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-31'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-31'>#</a>
+      </div>
+      <p>This isn't checking the return Status
+yet. When it does, Result will be return
+the status of the program call.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="nx">Result</span> <span class="o">=</span> <span class="nx">TRUE</span><span class="p">;</span>
+
+            <span class="nx">Return</span> <span class="nx">Result</span><span class="p">;</span>
+        <span class="nx">End</span><span class="o">-</span><span class="nx">Proc</span><span class="p">;</span>
+
+        <span class="p">[</span><span class="nx">See</span> <span class="k">this</span> <span class="nx">member</span><span class="p">](</span><span class="nx">https</span><span class="o">:</span><span class="c1">//goo.gl/RAXK9A)</span>
+        <span class="err">/copy rp_parts/includes,split</span>
+        <span class="p">[</span><span class="nx">See</span> <span class="k">this</span> <span class="nx">member</span><span class="p">](</span><span class="nx">https</span><span class="o">:</span><span class="c1">//goo.gl/FQtNhq)</span>
+        <span class="err">/copy rp_parts/includes,assert</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
