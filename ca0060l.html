@@ -2,14 +2,14 @@
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
-  <title>ca0060l.rpg</title>
+  <title>ca0060L.rpg</title>
   <link rel="stylesheet" href="pycco.css">
 </head>
 <body>
 <div id='container'>
   <div id="background"></div>
   <div class='section'>
-    <div class='docs'><h1>ca0060l.rpg</h1></div>
+    <div class='docs'><h1>ca0060L.rpg</h1></div>
   </div>
   <div class='clearall'>
   <div class='section' id='section-0'>
@@ -24,19 +24,7 @@ panel with Mobile RPG. </p>
 <hr />
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span></span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-1'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-1'>#</a>
-      </div>
-      <p>Hook up OK and cancel buttons.</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>        <span class="nx">Ctl</span><span class="o">-</span><span class="nx">Opt</span> <span class="nx">Option</span><span class="p">(</span><span class="o">*</span><span class="nx">srcstmt</span><span class="p">)</span> <span class="nx">Dftactgrp</span><span class="p">(</span><span class="o">*</span><span class="nx">No</span><span class="p">)</span> <span class="nx">ActGrp</span><span class="p">(</span><span class="s1">&#39;rpmobile&#39;</span><span class="p">);</span>
+      <div class="highlight"><pre><span></span>        <span class="nx">Ctl</span><span class="o">-</span><span class="nx">Opt</span> <span class="nx">Option</span><span class="p">(</span><span class="o">*</span><span class="nx">srcstmt</span><span class="p">)</span> <span class="nx">Dftactgrp</span><span class="p">(</span><span class="o">*</span><span class="nx">No</span><span class="p">)</span> <span class="nx">ActGrp</span><span class="p">(</span><span class="s1">&#39;rpmobile&#39;</span><span class="p">);</span>
 
         <span class="nx">Dcl</span><span class="o">-</span><span class="nx">F</span> <span class="nx">custau</span> <span class="nx">WORKSTN</span> <span class="nx">Infds</span><span class="p">(</span><span class="nx">Infds</span><span class="p">)</span>
                              <span class="nx">IndDs</span><span class="p">(</span><span class="nx">Display</span><span class="p">)</span>
@@ -44,10 +32,10 @@ panel with Mobile RPG. </p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-2'>
+  <div class='section' id='section-1'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-2'>#</a>
+        <a class='octothorpe' href='#section-1'>#</a>
       </div>
       <p>Program parameter list.</p>
 <ol>
@@ -63,10 +51,10 @@ panel with Mobile RPG. </p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-3'>
+  <div class='section' id='section-2'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-3'>#</a>
+        <a class='octothorpe' href='#section-2'>#</a>
       </div>
       <p><code>/copy</code> the program status data structure and 
 the <code>Infds</code> data structure (which provides the 
@@ -79,20 +67,19 @@ as <code>CurrentFormat</code>.)
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-4'>
+  <div class='section' id='section-3'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-4'>#</a>
+        <a class='octothorpe' href='#section-3'>#</a>
       </div>
       <p>This data structure maps indicators to
 meaningful names for use with the display file. 
 It's associated with the display file with
-its IndDs keyword. 
-<a href="https://asna.com">Read more details </a>
-about how this structure works.</p>
+its IndDs keyword. </p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Ds</span> <span class="nx">Display</span> <span class="nx">Qualified</span><span class="p">;</span>                 
+      <div class="highlight"><pre>        <span class="nx">Dcl</span><span class="o">-</span><span class="nx">Ds</span> <span class="nx">Display</span> <span class="nx">Qualified</span><span class="p">;</span>   
+            <span class="c1">// Response indicators.              </span>
             <span class="nx">Exit</span>           <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
             <span class="nx">Cancel</span>         <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
             <span class="nx">Back</span>           <span class="nx">Ind</span> <span class="nx">Pos</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
@@ -116,10 +103,10 @@ about how this structure works.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-5'>
+  <div class='section' id='section-4'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-5'>#</a>
+        <a class='octothorpe' href='#section-4'>#</a>
       </div>
       <p>Externally defined data structures provide
 target storage area for SQL query. </p>
@@ -133,10 +120,10 @@ target storage area for SQL query. </p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-6'>
+  <div class='section' id='section-5'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-6'>#</a>
+        <a class='octothorpe' href='#section-5'>#</a>
       </div>
       <p>Named indicators. Don't define any
 here for display file-related indicators. Use
@@ -151,10 +138,10 @@ indicators.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-7'>
+  <div class='section' id='section-6'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-7'>#</a>
+        <a class='octothorpe' href='#section-6'>#</a>
       </div>
       <p>Global variables. Put all global variables 
 in this data structure. </p>
@@ -164,10 +151,10 @@ in this data structure. </p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-8'>
+  <div class='section' id='section-7'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-8'>#</a>
+        <a class='octothorpe' href='#section-7'>#</a>
       </div>
       <p>JobID          Char(10);</p>
     </div>
@@ -176,10 +163,10 @@ in this data structure. </p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-9'>
+  <div class='section' id='section-8'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-9'>#</a>
+        <a class='octothorpe' href='#section-8'>#</a>
       </div>
       <p>Initialize program. If <code>Init()</code> returns false then 
 an error occurred and control should be passed
@@ -188,9 +175,19 @@ immediately back to the caller.       </p>
     <div class='code'>
       <div class="highlight"><pre>        <span class="nx">If</span> <span class="nx">NOT</span> <span class="nx">Init</span><span class="p">();</span>        
             <span class="nx">Return</span><span class="p">;</span>
-        <span class="nx">EndIf</span><span class="p">;</span>
-
-        <span class="nx">Main</span><span class="p">();</span>
+        <span class="nx">EndIf</span><span class="p">;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>Main program loop.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nx">Main</span><span class="p">();</span>
 
         <span class="nx">Return</span><span class="p">;</span></pre></div>
     </div>
@@ -448,6 +445,8 @@ test for no row found.</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>        <span class="err">/copy rp_parts/includes,assert</span>
+        
+        <span class="err">/copy rp_parts/includes,message</span>
 
 </pre></div>
     </div>
